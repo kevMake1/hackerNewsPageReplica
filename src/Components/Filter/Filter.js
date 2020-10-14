@@ -1,6 +1,5 @@
 import React from 'react'
 import DropdownButton from 'react-bootstrap/DropdownButton'
-import p from 'react-bootstrap/SelectableContext'
 import Dropdown from 'react-bootstrap/Dropdown'
 
 export default function Filter(){

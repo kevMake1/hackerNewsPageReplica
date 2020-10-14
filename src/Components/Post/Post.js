@@ -2,11 +2,12 @@ import React from 'react'
 
 import './Post.css'
 
-export default function Post() {
+export default function Post(props) {
     return (
-        <div className="Post.css">
-            <h3>Title</h3>
-            <p>{} posts | {} | {} months ago | {} comments | {}</p>
+        <div onClick={props.clicked} className="Post.css">
+            <h3>{props.title}</h3>
+            <p>{props.points} points | {props.by} | {props.time} | {props.comments} comments | {props.url}</p>
+            <hr></hr>
         </div>
     )
 }
