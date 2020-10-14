@@ -1,0 +1,23 @@
+.Header{
+    background-color: #ffa500;
+    padding: 10px;
+}
+
+.Header h3{
+    color: white;
+    display: inline;
+}
+
+.Header input{
+    display: inline;
+    margin: 0 10px;
+    border: none;
+    padding: 10px;
+    width: 50%;
+
+}
+
+.Header h5{
+    
+    display: inline;
+}
