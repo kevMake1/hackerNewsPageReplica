@@ -1,23 +1,33 @@
-import React from 'react'
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
+import React, { useState, useContext } from "react";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 
-export default function Filter(){
+import "./Filter.css";
+import FilterContext from "../../context/filterContext";
 
-    const dropdownClickHandler = (e) =>{
-        console.log(e.target.children)
-    }
+export default function Filter() {
+  const [buttonTitle, setButtonTitle] = useState("Top Stories");
 
-    return(
-        <div>
-            <DropdownButton  variant="outline-secondary" title="Dropdown button">
-                <Dropdown.Item onClick={dropdownClickHandler} href="#/action-1" >Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-            </DropdownButton>
+  const filterContext = useContext(FilterContext);
 
-        </div>
+  const dropdownClickHandler = (e) => {
+    setButtonTitle(e.target.innerText);
+    filterContext.filterSelected = buttonTitle;
+  };
 
-    )
+  return (
+    <div id="Filter">
+      <DropdownButton variant="outline-secondary" title={buttonTitle}>
+        <Dropdown.Item onClick={dropdownClickHandler} href="#/action-1">
+          Top Stories
+        </Dropdown.Item>
+        <Dropdown.Item onClick={dropdownClickHandler} href="#/action-2">
+          New Stories
+        </Dropdown.Item>
+        <Dropdown.Item onClick={dropdownClickHandler} href="#/action-3">
+          Best Stories
+        </Dropdown.Item>
+      </DropdownButton>
+    </div>
+  );
 }
-

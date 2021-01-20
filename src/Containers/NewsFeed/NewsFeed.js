@@ -1,24 +1,30 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import Post from '../../Components/Post/Post'
+import React, { Component } from 'react';
+import axios from 'axios';
+import Post from '../../Components/Post/Post';
+import FilterContext from '../../context/filterContext';
+import Filter from '../../Components/Filter/Filter';
+import { Button } from 'react-bootstrap';
+
+
 
 export default class NewsFeed extends Component {
 
+    static contextType = FilterContext;
+
     state = {
-        posts: []
+        posts: [],
     }
 
     componentDidMount(){
 
-        this.fetchTopStories()
-
+        this.fetchTopStories();
     }
 
     fetchTopStories = () => {
         //get top stories ids
         axios.get('https://hacker-news.firebaseio.com/v0/topstories.json')
             .then(res => {
-                const postIDs= res.data.splice(0, 6)
+                const postIDs= res.data.splice(0, 20)
 
                 //get each story object from the id
                 postIDs.forEach(postID => {
@@ -54,6 +60,10 @@ export default class NewsFeed extends Component {
         }
     }
 
+    applyFilterBtnClicked = (filter) =>{
+        console.log(this.context.filterSelected)
+    }
+
     postClickedHandler = (id) => {
         console.log(id)
     }
@@ -71,7 +81,7 @@ export default class NewsFeed extends Component {
                     points={post.score}
                     by={post.by}
                     time={this.getPostTime(post)}
-                    comments={post.kids.length}
+                    // comments={post.kids.length}
                     url={post.url}
                     clicked={() => this.postClickedHandler(post.id)}
                 />
@@ -79,6 +89,9 @@ export default class NewsFeed extends Component {
         })
         return (
             <div>
+                <Filter />
+                <Button onClick={() => this.applyFilterBtnClicked(this.context.filterChosen)}>Apply Changes</Button>
+
                 {allPosts}
             </div>
         )
