@@ -1,0 +1,16 @@
+.spin{
+    margin-left: 50%;
+}
+
+#filter-container{
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.filter-items{
+    margin: 0 20px;
+}
