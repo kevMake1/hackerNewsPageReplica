@@ -5,6 +5,7 @@ import NewsFeed from "./NewsFeed/NewsFeed";
 import "bootstrap/dist/css/bootstrap.min.css";
 import FilterContext from "../context/FilterContext";
 import SearchContext from "../context/SearchContext";
+import Favorite from "../Components/Favorite/Favorite";
 
 export default class App extends Component {
   state = {
@@ -25,6 +26,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <Favorite />
         <FilterContext.Provider
           value={{ filter: this.state.filter, setFilter: this.updateFilter }}
         >
