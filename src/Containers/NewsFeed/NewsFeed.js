@@ -6,11 +6,17 @@ import Filter from "../../Components/Filter/Filter";
 import { Button, Spinner } from "react-bootstrap";
 
 import "./NewsFeed.css";
+import SearchContext from "../../context/SearchContext";
 
 export default class NewsFeed extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     posts: [],
     isLoading: true,
+    isSearching: false,
   };
 
   componentDidMount() {
@@ -43,11 +49,11 @@ export default class NewsFeed extends Component {
         break;
     }
 
-    //get top stories ids
+    //get stories ids
     axios
       .get("https://hacker-news.firebaseio.com/v0/" + selectedFilter)
       .then((res) => {
-        const postIDs = res.data.splice(0, 3);
+        const postIDs = res.data.splice(0, 50);
 
         //get each story object from the id
         postIDs.forEach((postID) => {
@@ -57,7 +63,10 @@ export default class NewsFeed extends Component {
           axios
             .get(newUrl)
             .then((res) => {
-              this.setState({ posts: [...this.state.posts, res.data], isLoading: false });
+              this.setState({
+                posts: [...this.state.posts, res.data],
+                isLoading: false,
+              });
             })
             .catch((error) => {
               console.log(error);
@@ -82,8 +91,52 @@ export default class NewsFeed extends Component {
     }
   };
 
+  setPosts = () => {
+    let fetchPosts;
+    let filteredPosts;
+    if (!this.context.searchValue === '') {
+      fetchPosts = this.state.posts.map((post) => {
+        return (
+          <Post
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            points={post.score}
+            by={post.by}
+            time={this.getPostTime(post)}
+            // comments={post.kids.length}
+            url={post.url}
+            clicked={() => this.postClickedHandler(post.id)}
+          />
+        );
+      });
+    } else {
+      filteredPosts = this.state.posts.filter((post) => {
+        return post.title
+          .toLowerCase()
+          .includes(this.context.searchValue.toLowerCase());
+      });
+      fetchPosts = filteredPosts.map((post) => {
+        return (
+          <Post
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            points={post.score}
+            by={post.by}
+            time={this.getPostTime(post)}
+            // comments={post.kids.length}
+            url={post.url}
+            clicked={() => this.postClickedHandler(post.id)}
+          />
+        );
+      });
+    }
+
+    return fetchPosts;
+  };
+
   applyFilterBtnClicked = (filter) => {
-    console.log(filter);
     this.fetchStories(filter);
   };
 
@@ -94,27 +147,14 @@ export default class NewsFeed extends Component {
   //res.data.title, res.data.score, res.data.by, res.data.time, res.data.kids (is an array), res.data.url
 
   render() {
-    const allPosts = this.state.posts.map((post) => {
-      return (
-        <Post
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          points={post.score}
-          by={post.by}
-          time={this.getPostTime(post)}
-          // comments={post.kids.length}
-          url={post.url}
-          clicked={() => this.postClickedHandler(post.id)}
-        />
-      );
-    });
+    let fetchPosts = this.setPosts();
+
     return (
       <div>
         <FilterContext.Consumer>
           {({ filter }) => (
-            <div id={'filter-container'}>
-              <Filter className={'filter-items'} />
+            <div id={"filter-container"}>
+              <Filter className={"filter-items"} />
               <Button
                 className={"filter-items"}
                 onClick={() => this.applyFilterBtnClicked(filter)}
@@ -125,8 +165,10 @@ export default class NewsFeed extends Component {
           )}
         </FilterContext.Consumer>
 
-        {this.state.isLoading ? this.showLoading() : allPosts}
+        {this.state.isLoading ? this.showLoading() : fetchPosts}
       </div>
     );
   }
 }
+
+NewsFeed.contextType = SearchContext;
