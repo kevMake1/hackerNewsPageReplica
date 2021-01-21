@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Post from '../../Components/Post/Post';
-import FilterContext from '../../context/filterContext';
+import FilterContext from '../../context/FilterContext';
 import Filter from '../../Components/Filter/Filter';
 import { Button } from 'react-bootstrap';
 
@@ -9,22 +9,38 @@ import { Button } from 'react-bootstrap';
 
 export default class NewsFeed extends Component {
 
-    static contextType = FilterContext;
-
     state = {
         posts: [],
     }
 
     componentDidMount(){
-
-        this.fetchTopStories();
+        this.fetchStories('Top Stories');
     }
 
-    fetchTopStories = () => {
+    fetchStories = (filter) => {
+
+        this.setState({...this.state, posts: []});
+
+        let selectedFilter;
+
+        switch(filter){
+            case 'Top Stories':
+                selectedFilter = 'topstories.json';
+                break;
+            case 'New Stories':
+                selectedFilter = 'newstories.json';
+                break;
+            case 'Best Stories':
+                selectedFilter = 'beststories.json'
+                break;
+
+        }
+
+
         //get top stories ids
-        axios.get('https://hacker-news.firebaseio.com/v0/topstories.json')
+        axios.get('https://hacker-news.firebaseio.com/v0/' + selectedFilter)
             .then(res => {
-                const postIDs= res.data.splice(0, 20)
+                const postIDs= res.data.splice(0, 3)
 
                 //get each story object from the id
                 postIDs.forEach(postID => {
@@ -61,7 +77,8 @@ export default class NewsFeed extends Component {
     }
 
     applyFilterBtnClicked = (filter) =>{
-        console.log(this.context.filterSelected)
+        console.log(filter)
+        this.fetchStories(filter);
     }
 
     postClickedHandler = (id) => {
@@ -71,6 +88,8 @@ export default class NewsFeed extends Component {
     //res.data.title, res.data.score, res.data.by, res.data.time, res.data.kids (is an array), res.data.url
 
     render() {
+
+
 
         const allPosts = this.state.posts.map( post => {
             return(
@@ -90,7 +109,9 @@ export default class NewsFeed extends Component {
         return (
             <div>
                 <Filter />
-                <Button onClick={() => this.applyFilterBtnClicked(this.context.filterChosen)}>Apply Changes</Button>
+                <FilterContext.Consumer>
+                    {({filter})=> <Button onClick={() => this.applyFilterBtnClicked(filter)}>Apply Changes</Button>}
+                </FilterContext.Consumer>
 
                 {allPosts}
             </div>

@@ -1,8 +1,10 @@
 import React from 'react'
 
+
 const FilterContext = React.createContext({
-    
-    filterSelected: 'Top Stories'
+
+    filter: 'Top Stories',
+    setFilter: () => {}
 
 });
 

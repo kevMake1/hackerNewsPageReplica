@@ -3,21 +3,21 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import "./Filter.css";
-import FilterContext from "../../context/filterContext";
+import FilterContext from "../../context/FilterContext";
 
 export default function Filter() {
-  const [buttonTitle, setButtonTitle] = useState("Top Stories");
 
-  const filterContext = useContext(FilterContext);
+  const {filter, setFilter} = useContext(FilterContext);
+
 
   const dropdownClickHandler = (e) => {
-    setButtonTitle(e.target.innerText);
-    filterContext.filterSelected = buttonTitle;
+    const selectedFilter = e.target.innerHTML;
+    setFilter(selectedFilter);
   };
 
   return (
     <div id="Filter">
-      <DropdownButton variant="outline-secondary" title={buttonTitle}>
+      <DropdownButton variant="outline-secondary" title={filter}>
         <Dropdown.Item onClick={dropdownClickHandler} href="#/action-1">
           Top Stories
         </Dropdown.Item>
