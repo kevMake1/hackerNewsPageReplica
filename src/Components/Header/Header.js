@@ -5,13 +5,12 @@ import "./header.css"
 
 export default function Header() {
 
-    const { searchValue, setSearchValue } = useContext(SearchContext);
+    const { setSearchValue } = useContext(SearchContext);
 
     const inputChangedHandler = (e)=>{
         const value = e.target.value;
         setSearchValue(value);
     }
-
 
     return (
         <div className="Header">

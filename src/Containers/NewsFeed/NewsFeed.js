@@ -9,24 +9,19 @@ import "./NewsFeed.css";
 import SearchContext from "../../context/SearchContext";
 
 export default class NewsFeed extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   state = {
     posts: [],
-    isLoading: true,
-    isSearching: false,
+    isLoading: true
   };
 
+  //Life Cycle methods----------------------------------------------------------------
   componentDidMount() {
     this.fetchStories("Top Stories");
     this.setState({ ...this.state, isLoading: false });
   }
 
-  showLoading() {
-    return <Spinner className={"spin"} animation="border" variant="warning" />;
-  }
+  //fetch from hacker new's api--------------------------------------------------------
 
   fetchStories = (filter) => {
     //clear posts before repopulating, and start loading
@@ -78,20 +73,8 @@ export default class NewsFeed extends Component {
       });
   };
 
-  getPostTime = (post) => {
-    const today = new Date();
-    const postDate = new Date(post.time);
-
-    if (today.getYear() - postDate.getYear() > 0) {
-      return today.getYear() - postDate.getYear() + " years ago";
-    } else if (today.getMonth() - postDate.getMonth() > 0) {
-      return today.getMonth() - postDate.getMonth() + " months ago";
-    } else {
-      return today.getDay() - postDate.getDay() + " days ago";
-    }
-  };
-
-  setPosts = () => {
+  //Prepare posts to be rendered to screen----------------------------------------------------------------
+  setPosts = () => { //returns all posts if search is empty, otherwise, return filtered posts based on search input
     let fetchPosts;
     let filteredPosts;
     if (!this.context.searchValue === '') {
@@ -136,6 +119,22 @@ export default class NewsFeed extends Component {
     return fetchPosts;
   };
 
+
+  //Convert time----------------------------------------------------------------
+  getPostTime = (post) => {
+    const today = new Date();
+    const postDate = new Date(post.time);
+
+    if (today.getYear() - postDate.getYear() > 0) {
+      return today.getYear() - postDate.getYear() + " years ago";
+    } else if (today.getMonth() - postDate.getMonth() > 0) {
+      return today.getMonth() - postDate.getMonth() + " months ago";
+    } else {
+      return today.getDay() - postDate.getDay() + " days ago";
+    }
+  };
+
+  //Button clicks and handler methods----------------------------------------------------------------
   applyFilterBtnClicked = (filter) => {
     this.fetchStories(filter);
   };
@@ -144,9 +143,16 @@ export default class NewsFeed extends Component {
     console.log(id);
   };
 
+  //Other methods----------------------------------------------------------------
+  showLoading() {
+    return <Spinner className={"spin"} animation="border" variant="warning" />;
+  }
+
+
   //res.data.title, res.data.score, res.data.by, res.data.time, res.data.kids (is an array), res.data.url
 
   render() {
+
     let fetchPosts = this.setPosts();
 
     return (
