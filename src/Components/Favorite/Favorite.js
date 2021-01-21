@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebook,
-  faInstagram,
-  faYoutube,
-} from "@fortawesome/free-brands-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 export default function Favorite() {
+  const [favorite, setFavorite] = useState(false);
+
+  const clickHandler = () => {
+    setFavorite(!favorite);
+  };
+
   return (
-    <div>
-      <FontAwesomeIcon icon={faFacebook} size="2x" />
-    </div>
+ 
+      <FontAwesomeIcon
+        className={'heart'}
+        style={{ color: favorite ? "#ff577f" : "gray" }}
+        onClick={clickHandler}
+        icon={faHeart}
+        size="2x"
+      />
+
   );
 }
