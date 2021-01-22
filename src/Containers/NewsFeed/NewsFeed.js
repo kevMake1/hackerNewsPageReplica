@@ -12,6 +12,7 @@ export default class NewsFeed extends Component {
 
   state = {
     posts: [],
+    favorites: [],
     isLoading: true
   };
 
@@ -79,6 +80,7 @@ export default class NewsFeed extends Component {
     let filteredPosts;
     if (!this.context.searchValue === '') {
       fetchPosts = this.state.posts.map((post) => {
+        post.favSet = false;
         return (
           <Post
             key={post.id}
@@ -89,7 +91,7 @@ export default class NewsFeed extends Component {
             time={this.getPostTime(post)}
             // comments={post.kids.length}
             url={post.url}
-            clicked={() => this.postClickedHandler(post.id)}
+            favClicked={() => this.heartIconClickedHandler(post)}
           />
         );
       });
@@ -110,7 +112,7 @@ export default class NewsFeed extends Component {
             time={this.getPostTime(post)}
             // comments={post.kids.length}
             url={post.url}
-            clicked={() => this.postClickedHandler(post.id)}
+            favClicked={() => this.heartIconClickedHandler(post)}
           />
         );
       });
@@ -136,22 +138,35 @@ export default class NewsFeed extends Component {
 
   //Button clicks and handler methods----------------------------------------------------------------
   applyFilterBtnClicked = (filter) => {
+    
     this.fetchStories(filter);
+    
   };
 
-  postClickedHandler = (id) => {
-    console.log(id);
+  heartIconClickedHandler = (post) => {
+
+    if(this.state.favorites.some(postObj => postObj === post)){
+
+      //it exists so remove from favorites
+      let newArr = [...this.state.favorites];
+      let index = newArr.indexOf(post);
+      newArr.splice(index, 1);
+      this.setState({...this.state, favorites: newArr})
+      
+    } else {
+      //add to favorites
+      this.setState({...this.state, favorites: [...this.state.favorites, post]});
+    }
+    
   };
 
   //Other methods----------------------------------------------------------------
-  showLoading() {
-    return <Spinner className={"spin"} animation="border" variant="warning" />;
+  showLoading = () => {
+    return <Spinner className={"spin"} animation="border" variant="warning" />
   }
-
-
   //res.data.title, res.data.score, res.data.by, res.data.time, res.data.kids (is an array), res.data.url
 
-  render() {
+  render(){
 
     let fetchPosts = this.setPosts();
 

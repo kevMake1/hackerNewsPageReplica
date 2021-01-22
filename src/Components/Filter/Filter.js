@@ -18,13 +18,13 @@ export default function Filter() {
   return (
     <div id="Filter">
       <DropdownButton variant="outline-secondary" title={filter}>
-        <Dropdown.Item onClick={dropdownClickHandler} href="#/action-1">
+        <Dropdown.Item onClick={dropdownClickHandler}>
           Top Stories
         </Dropdown.Item>
-        <Dropdown.Item onClick={dropdownClickHandler} href="#/action-2">
+        <Dropdown.Item onClick={dropdownClickHandler}>
           New Stories
         </Dropdown.Item>
-        <Dropdown.Item onClick={dropdownClickHandler} href="#/action-3">
+        <Dropdown.Item onClick={dropdownClickHandler}>
           Best Stories
         </Dropdown.Item>
       </DropdownButton>
