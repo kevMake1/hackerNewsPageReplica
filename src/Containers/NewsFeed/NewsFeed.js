@@ -20,6 +20,7 @@ export default class NewsFeed extends Component {
   componentDidMount() {
     this.fetchStories("Top Stories");
     this.setState({ ...this.state, isLoading: false });
+
   }
 
   //fetch from hacker new's api--------------------------------------------------------
@@ -112,7 +113,8 @@ export default class NewsFeed extends Component {
             time={this.getPostTime(post)}
             // comments={post.kids.length}
             url={post.url}
-            favClicked={() => this.heartIconClickedHandler(post)}
+            favClicked={() => this.heartIconClickedHandler(post.id)}
+            isFav={localStorage.getItem(post.id) ? true : false}
           />
         );
       });
@@ -143,19 +145,14 @@ export default class NewsFeed extends Component {
     
   };
 
-  heartIconClickedHandler = (post) => {
+  heartIconClickedHandler = (postID) => {
 
-    if(this.state.favorites.some(postObj => postObj === post)){
+    if(localStorage.getItem(postID)){
 
-      //it exists so remove from favorites
-      let newArr = [...this.state.favorites];
-      let index = newArr.indexOf(post);
-      newArr.splice(index, 1);
-      this.setState({...this.state, favorites: newArr})
+      localStorage.removeItem(postID);
       
     } else {
-      //add to favorites
-      this.setState({...this.state, favorites: [...this.state.favorites, post]});
+      localStorage.setItem(postID, 'true');
     }
     
   };

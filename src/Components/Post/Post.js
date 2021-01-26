@@ -8,7 +8,7 @@ export default function Post(props) {
         <div className="Post">
             <h3>{props.title}</h3>
             <p>{props.points} points | {props.by} | {props.time} | {/*props.comments*/} comments | {props.url}</p>
-            <Favorite favClicked={props.favClicked} />
+            <Favorite isFav={props.isFav} favClicked={props.favClicked} />
             <hr></hr>
         </div>
     )

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 export default function Favorite(props) {
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(props.isFav);
 
   const clickAndSet = () =>{
     clickHandler();
