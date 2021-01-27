@@ -1,3 +1,7 @@
+.Post{
+    animation: fadeIn 500ms;
+}
+
 .heart{
     display: flex;
     position: relative;

@@ -1,6 +1,12 @@
 .Header{
     background-color: #ffa500;
     padding: 10px;
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn{
+    0%{opacity: 0;}
+    100%{opacity: 1;}
 }
 
 .Header h3{
