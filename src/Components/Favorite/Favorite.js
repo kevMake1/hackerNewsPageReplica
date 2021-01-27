@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
+import './Favorite.css';
+
 export default function Favorite(props) {
   const [favorite, setFavorite] = useState(props.isFav);
 
