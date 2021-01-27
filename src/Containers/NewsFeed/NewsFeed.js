@@ -9,10 +9,10 @@ import "./NewsFeed.css";
 import SearchContext from "../../context/SearchContext";
 
 export default class NewsFeed extends Component {
-
   state = {
     posts: [],
-    isLoading: true
+    currentFilter: "",
+    isLoading: true,
   };
 
   //Life Cycle methods----------------------------------------------------------------
@@ -24,7 +24,12 @@ export default class NewsFeed extends Component {
 
   fetchStories = (filter) => {
     //clear posts before repopulating, and start loading
-    this.setState({ ...this.state, posts: [], isLoading: true });
+    this.setState({
+      ...this.state,
+      currentFilter: filter,
+      posts: [],
+      isLoading: true,
+    });
 
     let selectedFilter;
 
@@ -42,6 +47,7 @@ export default class NewsFeed extends Component {
         selectedFilter = "topstories.json";
         break;
     }
+    
 
     //get stories ids
     axios
@@ -59,7 +65,7 @@ export default class NewsFeed extends Component {
             .then((res) => {
               this.setState({
                 posts: [...this.state.posts, res.data],
-                isLoading: false
+                isLoading: false,
               });
             })
             .catch((error) => {
@@ -73,10 +79,11 @@ export default class NewsFeed extends Component {
   };
 
   //Prepare posts to be rendered to screen----------------------------------------------------------------
-  setPosts = () => { //returns all posts if search is empty, otherwise, return filtered posts based on search input
+  setPosts = () => {
+    //returns all posts if search is empty, otherwise, return filtered posts based on search input
     let fetchPosts;
     let filteredPosts;
-    if (!this.context.searchValue === '') {
+    if (!this.context.searchValue === "") {
       fetchPosts = this.state.posts.map((post) => {
         post.favSet = false;
         return (
@@ -120,7 +127,6 @@ export default class NewsFeed extends Component {
     return fetchPosts;
   };
 
-
   //Convert time----------------------------------------------------------------
   getPostTime = (post) => {
     const today = new Date();
@@ -137,45 +143,42 @@ export default class NewsFeed extends Component {
 
   //Button clicks and handler methods----------------------------------------------------------------
   applyFilterBtnClicked = (filter) => {
-    
     this.fetchStories(filter);
-    
   };
 
   heartIconClickedHandler = (postID) => {
-
-    if(localStorage.getItem(postID)){
-
+    if (localStorage.getItem(postID)) {
       localStorage.removeItem(postID);
-      
     } else {
-      localStorage.setItem(postID, 'true');
+      localStorage.setItem(postID, "true");
     }
-    
   };
 
   //Other methods----------------------------------------------------------------
   showLoading = () => {
-    return <Spinner className={"spin"} animation="border" variant="warning" />
-  }
+    return <Spinner className={"spin"} animation="border" variant="warning" />;
+  };
   //res.data.title, res.data.score, res.data.by, res.data.time, res.data.kids (is an array), res.data.url
 
-  render(){
-
+  render() {
     let fetchPosts = this.setPosts();
 
     return (
       <div>
         <FilterContext.Consumer>
           {({ filter }) => (
-            <div id={"filter-container"}>
-              <Filter className={"filter-items"} />
-              <Button
-                className={"filter-items"}
-                onClick={() => this.applyFilterBtnClicked(filter)}
-              >
-                Apply Changes
-              </Button>
+            <div>
+              <div id={"filter-container"}>
+                <Filter className={"filter-items"} />
+                {filter !== this.state.currentFilter && (
+                  <Button
+                    className={"filter-items"}
+                    onClick={() => this.applyFilterBtnClicked(filter)}
+                  >
+                    Apply Changes
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </FilterContext.Consumer>
