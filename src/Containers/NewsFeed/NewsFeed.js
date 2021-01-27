@@ -12,15 +12,12 @@ export default class NewsFeed extends Component {
 
   state = {
     posts: [],
-    favorites: [],
     isLoading: true
   };
 
   //Life Cycle methods----------------------------------------------------------------
   componentDidMount() {
     this.fetchStories("Top Stories");
-    this.setState({ ...this.state, isLoading: false });
-
   }
 
   //fetch from hacker new's api--------------------------------------------------------
@@ -62,7 +59,7 @@ export default class NewsFeed extends Component {
             .then((res) => {
               this.setState({
                 posts: [...this.state.posts, res.data],
-                isLoading: false,
+                isLoading: false
               });
             })
             .catch((error) => {
