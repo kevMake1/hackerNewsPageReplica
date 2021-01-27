@@ -13,3 +13,16 @@
     margin: 0 20px;
 }
 
+#apply-filter-btn{
+    position: relative;
+    animation: applyFilterBtn;
+    animation-duration: 0.3s;
+}
+
+@keyframes applyFilterBtn{
+    0%{opacity: 0; right: 100px;}
+    25%{opacity: 0.1; }
+    50%{opacity: 0.2; }
+    75%{opacity: 0.3; }
+    100%{opacity: 1; right: 0px;}
+}

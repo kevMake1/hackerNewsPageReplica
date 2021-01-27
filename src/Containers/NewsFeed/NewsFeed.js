@@ -172,6 +172,7 @@ export default class NewsFeed extends Component {
                 <Filter className={"filter-items"} />
                 {filter !== this.state.currentFilter && (
                   <Button
+                    id={'apply-filter-btn'}
                     className={"filter-items"}
                     onClick={() => this.applyFilterBtnClicked(filter)}
                   >
