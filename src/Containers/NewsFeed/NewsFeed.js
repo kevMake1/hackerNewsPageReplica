@@ -85,7 +85,7 @@ export default class NewsFeed extends Component {
     let filteredPosts;
     if (!this.context.searchValue === "") {
       fetchPosts = this.state.posts.map((post) => {
-        post.favSet = false;
+        
         return (
           <Post
             key={post.id}
@@ -96,7 +96,8 @@ export default class NewsFeed extends Component {
             time={this.getPostTime(post)}
             // comments={post.kids.length}
             url={post.url}
-            favClicked={() => this.heartIconClickedHandler(post)}
+            favClicked={() => this.heartIconClickedHandler(post.id)}
+            isFav={localStorage.getItem(post.id) ? true : false}
           />
         );
       });

@@ -21,9 +21,9 @@ export default function Filter() {
         <Dropdown.Item onClick={dropdownClickHandler}>
           Top Stories
         </Dropdown.Item>
-        <Dropdown.Item onClick={dropdownClickHandler}>
+        {/* <Dropdown.Item onClick={dropdownClickHandler}>
           New Stories
-        </Dropdown.Item>
+        </Dropdown.Item> */}
         <Dropdown.Item onClick={dropdownClickHandler}>
           Best Stories
         </Dropdown.Item>
